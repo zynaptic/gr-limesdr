@@ -248,8 +248,18 @@ namespace gr
       return true;
     }
     
+    void
+    sink_impl::forecast(int noutput_items,
+		    gr_vector_int &ninput_items_required)
+    {	
+        ninput_items_required[0] = noutput_items;		
+        if (stored.chip_mode == 2)
+            ninput_items_required[1] = noutput_items;		
+	}			    
+    
     int
-    sink_impl::work(int noutput_items,
+    sink_impl::general_work(int noutput_items,
+		    gr_vector_int &ninput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items)
     {
@@ -265,6 +275,7 @@ namespace gr
 		return 0; //call again
 	    }
 	    consume(0,ret);
+	    return ret;
 	}
 	// Send stream for channels 0 & 1 (if chip_mode is MIMO)
 	else if(stored.chip_mode == 2)
@@ -283,6 +294,7 @@ namespace gr
 	    }
 	    consume(0,ret0);
 	    consume(1,ret1);
+	    return (ret0 < ret1) ? ret0 : ret1;
 	}
     }
 
