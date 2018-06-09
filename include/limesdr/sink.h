@@ -28,7 +28,7 @@ namespace gr
 {
   namespace limesdr
   {
-    class LIMESDR_API sink : virtual public gr::sync_block
+    class LIMESDR_API sink : virtual public gr::block
     {
     public:
 	typedef boost::shared_ptr<sink> sptr;
